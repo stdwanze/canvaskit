@@ -13,6 +13,6 @@ CanvasKit = window.CanvasKit || {};
 		};
 		
 		return <obj>;
-	});
+	}());
 	
 }(window.CanvasKit || {}));

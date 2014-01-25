@@ -98,7 +98,7 @@ CanvasKit = window.CanvasKit || {}; ( function(CanvasKit) {"use strict";
 			};
 
 			return enginebase;
-		});
+		}());
 		
 		CanvasKit.OSDManager = ( function() {
 
