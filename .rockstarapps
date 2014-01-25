@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<rockstarapps>
+    
+
+<file name="canvaskit.all.js">
+        <min>true</min>
+        <comp>true</comp>
+        <closureCompiler>true</closureCompiler>
+        <gZip>true</gZip>
+        <resolveImports>false</resolveImports>
+        <urlRewriting>false</urlRewriting>
+        <autoBuild>false</autoBuild>
+        <lineLength>-1</lineLength>
+        <autoTimestamps>false</autoTimestamps>
+        <removeLogs>true</removeLogs>
+        <oldFileNames>true</oldFileNames>
+        <dependencies>
+            <file>ck_canvasengine.js</file>
+            <file>ck_shapes.js</file>
+            <file>ck_sound.js</file>
+        </dependencies>
+        <properties/>
+    </file>
+</rockstarapps>
