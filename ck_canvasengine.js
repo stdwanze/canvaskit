@@ -5,7 +5,7 @@ CanvasKit = window.CanvasKit || {}; ( function(CanvasKit) {"use strict";
 			STOP : 0,
 			IDLE : 1,
 			RUN : 2
-		};
+		}; 
 		CanvasKit.EngineBase = (function() {
 
 			function enginebase(canvas) {
@@ -99,48 +99,7 @@ CanvasKit = window.CanvasKit || {}; ( function(CanvasKit) {"use strict";
 
 			return enginebase;
 		});
-		CanvasKit.EngineElement =  (function() {
-
-			function element(location, size)// CanvasKit.Points
-			{
-				this.location = location;
-				this.size = size;
-			}
-
-
-			element.prototype = {
-				render : function(canvas, ctxt) {
-					return;
-				},
-				
-				isOut : function() {
-					return true;
-				}
-			};
-			return element;
-		});
-		CanvasKit.OSDElement = (function() {
-
-			function element(location, size)// CanvasKit.Points
-			{
-				this.location = location;
-				this.size = size;
-			}
-
-
-			element.prototype = {
-				render : function(canvas, ctxt) {
-					return;
-				},
-				isHit : function(point) {
-
-				},
-				activate : function() {
-					return;
-				}
-			};
-			return element;
-		});
+		
 		CanvasKit.OSDManager = ( function() {
 
 				function osd(canvas, ctxt) {
