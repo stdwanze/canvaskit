@@ -32,7 +32,7 @@ CanvasKit = window.CanvasKit || {};
 				}
 			};
 			return element;
-		});
+		}());
 		CanvasKit.OSDElement = (function() {
 
 			function element(location, size)// CanvasKit.Points
@@ -54,7 +54,7 @@ CanvasKit = window.CanvasKit || {};
 				}
 			};
 			return element;
-		});
+		}());
 		CanvasKit.Sprite = ( function() {
 
 				function sprite(image, location) {
