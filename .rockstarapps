@@ -2,6 +2,9 @@
 <rockstarapps>
     
 
+
+
+
 <file name="canvaskit.all.js">
         <min>true</min>
         <comp>true</comp>
@@ -15,9 +18,10 @@
         <removeLogs>true</removeLogs>
         <oldFileNames>true</oldFileNames>
         <dependencies>
-            <file>ck_canvasengine.js</file>
-            <file>ck_shapes.js</file>
-            <file>ck_sound.js</file>
+            <file>src/ck_algorithm.js</file>
+            <file>src/ck_canvasengine.js</file>
+            <file>src/ck_shapes.js</file>
+            <file>src/ck_sound.js</file>
         </dependencies>
         <properties/>
     </file>

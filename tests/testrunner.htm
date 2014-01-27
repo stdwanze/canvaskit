@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html class="no-js">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>CanvasTests</title>
+		
+		<link rel="stylesheet" href="./../testing/mocha.css" />
+		
+		<script type='text/javascript' src="./../testing/mocha.js"></script>
+		<script type='text/javascript' src="./../testing/chai.js"></script>
+		
+		<!-- classes under test -->
+		<script type='text/javascript' src="./../canvaskit.all.js"></script>
+ 		
+	</head>
+	<body>
+
+		<div id="mocha">
+			<p>
+				<a href=".">Index</a>
+			</p>
+		</div>
+		<div id="messages"></div>
+		<div id="fixtures"></div>
+		<script>
+			mocha.setup('bdd')
+		</script>
+		<!-- Add tests here -->
+		<script src="basicshapetests.js"></script>
+		
+		<!-- End of test definitions -->
+		<script>
+			mocha.run();
+		</script>
+	
+	</body>
+</html>

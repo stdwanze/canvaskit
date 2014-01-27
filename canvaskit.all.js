@@ -3,7 +3,31 @@
 */
 
 /*
- * START OF FILE - /canvaskit/ck_canvasengine.js
+ * START OF FILE - /canvaskit/src/ck_algorithm.js
+ */
+CanvasKit = window.CanvasKit || {};
+( function(CanvasKit) {"use strict";
+		CanvasKit.Algorithm = {
+
+			collides : function(AABB1, AABB2) {
+				if (AABB1.x < AABB2.x + AABB2.width && AABB1.x + AABB1.width > AABB2.x && AABB1.y < AABB2.y + AABB2.height && AABB1.y + AABB1.height > AABB2.y) {
+					return true;
+				} else {
+					return false;
+				}
+			}
+		};
+
+		return CanvasKit;
+	}(window.CanvasKit || {}));
+
+
+/*
+ * END OF FILE - /canvaskit/src/ck_algorithm.js
+ */
+
+/*
+ * START OF FILE - /canvaskit/src/ck_canvasengine.js
  */
 CanvasKit = window.CanvasKit || {}; ( function(CanvasKit) {"use strict";
 
@@ -151,14 +175,13 @@ CanvasKit = window.CanvasKit || {}; ( function(CanvasKit) {"use strict";
 	}(window.CanvasKit || {}));
 
 /*
- * END OF FILE - /canvaskit/ck_canvasengine.js
+ * END OF FILE - /canvaskit/src/ck_canvasengine.js
  */
 
 /*
- * START OF FILE - /canvaskit/ck_shapes.js
+ * START OF FILE - /canvaskit/src/ck_shapes.js
  */
-CanvasKit = window.CanvasKit || {};
-( function(CanvasKit) {"use strict";
+CanvasKit = window.CanvasKit || {}; ( function(CanvasKit) {"use strict";
 		CanvasKit.Point = ( function() {
 
 				function point(x, y) {
@@ -167,53 +190,68 @@ CanvasKit = window.CanvasKit || {};
 				};
 				return point;
 			}());
+			
+		CanvasKit.AABB = ( function() {
 
-		CanvasKit.EngineElement = (function() {
-
-			function element(location, size)// CanvasKit.Points
-			{
-				this.location = location;
-				this.size = size;
-			}
-
-
-			element.prototype = {
-				render : function(canvas, ctxt) {
-					return;
-				},
-
-				isOut : function() {
-					return false;
-				},
-				tick: function ()
-				{
+				function aabb(location, size) {
+					this.x = location.x;
+					this.y = location.x;
 					
+					this.width = size.x;
+					this.height = size.y;
+					
+				};
+				return aabb;
+			}());
+
+		CanvasKit.EngineElement = ( function() {
+
+				function element(location, size)// CanvasKit.Points
+				{
+					this.location = location;
+					this.size = size;
 				}
-			};
-			return element;
-		}());
-		CanvasKit.OSDElement = (function() {
-
-			function element(location, size)// CanvasKit.Points
-			{
-				this.location = location;
-				this.size = size;
-			}
 
 
-			element.prototype = {
-				render : function(canvas, ctxt) {
-					return;
-				},
-				isHit : function(point) {
+				element.prototype = {
+					render : function(canvas, ctxt) {
+						return;
+					},
 
-				},
-				activate : function() {
-					return;
+					isOut : function() {
+						return false;
+					},
+					tick : function() {
+
+					}
+				};
+				return element;
+			}());
+		CanvasKit.OSDElement = ( function() {
+
+				function element(location, size)// CanvasKit.Points
+				{
+					this.location = location;
+					this.size = size;
 				}
-			};
-			return element;
-		}());
+
+
+				element.prototype = {
+					render : function(canvas, ctxt) {
+						return;
+					},
+					isHit : function(point) {
+						
+						var aabb1 = new CanvasKit.AABB(this.location,this.size);
+						var aabb2 = new CanvasKit.AABB(point,new CanvasKit.Point(0,0));
+						return CanvasKit.Algorithm.collides(aabb1,aabb2);
+					},
+					activate : function() {
+						return;
+					}
+				};
+				return element;
+			}());
 		CanvasKit.Sprite = ( function() {
 
 				function sprite(image, location) {
@@ -241,30 +279,30 @@ CanvasKit = window.CanvasKit || {};
 					} else {
 						this.image = image;
 					}
-				
+
 					this.anispeed = 5;
 					this.frame = 0;
 				};
-				sprite.prototype.tick = function (x,y)
-				{
-					 this.frame++;
-					 this.location =  new Kit.Point(x, y);
-					 if(this.imageArray.length > 0) {
-					 if(this.frame % this.anispeed === 0) this.anistep = (this.anistep +1) % this.imageArray.length;
-					 this.image = this.imageArray[this.anistep];
-				}
-		
+				sprite.prototype.tick = function(x, y) {
+					this.frame++;
+					this.location = new Kit.Point(x, y);
+					if (this.imageArray.length > 0) {
+						if (this.frame % this.anispeed === 0)
+							this.anistep = (this.anistep + 1) % this.imageArray.length;
+						this.image = this.imageArray[this.anistep];
+					}
+				};
 				return sprite;
 			}());
 
 	}(window.CanvasKit || {}));
 
 /*
- * END OF FILE - /canvaskit/ck_shapes.js
+ * END OF FILE - /canvaskit/src/ck_shapes.js
  */
 
 /*
- * START OF FILE - /canvaskit/ck_sound.js
+ * START OF FILE - /canvaskit/src/ck_sound.js
  */
 /**
  * @author Stefan Dienst
@@ -395,7 +433,7 @@ CanvasKit = window.CanvasKit || {}; ( function(CanvasKit) {"use strict";
 	}(window.CanvasKit || {}));
 
 /*
- * END OF FILE - /canvaskit/ck_sound.js
+ * END OF FILE - /canvaskit/src/ck_sound.js
  */
 
 /*
