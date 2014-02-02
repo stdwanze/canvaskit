@@ -43,58 +43,102 @@ describe('BasicShape Tests', function() {
 			assert.equal(25, element.size.y);
 
 		});
-	
+
 	});
-	
-	describe('OSD Element', function (){
-		
-		
+
+	describe('OSD Element', function() {
+
 		var point = new CanvasKit.Point(10, 100);
 		var size = new CanvasKit.Point(20, 25);
 
 		var element = new CanvasKit.OSDElement(point, size);
 		it('should be hit', function() {
 
-			var click = new CanvasKit.Point(11,99);
+			var click = new CanvasKit.Point(11, 99);
 			assert.isTrue(element.isHit(click));
-		
 
 		});
-			it('should not be hit', function() {
+		it('should not be hit', function() {
 
-			var click = new CanvasKit.Point(1,3);
+			var click = new CanvasKit.Point(1, 3);
 			assert.isFalse(element.isHit(click));
 		});
 	});
-	
-	describe('Sprite Element', function (){
-		
-		
+
+	describe('Sprite Element', function() {
+
 		var point = new CanvasKit.Point(10, 100);
 		var image = new Image("./rsc/grassTop.png");
 
-		var sprite = new CanvasKit.Sprite(image,point);
-		
+		var sprite = new CanvasKit.Sprite(image, point);
+
 		it('should be inited as EngineElement', function() {
 
 			assert.equal(false, sprite.isOut());
 			assert.equal(10, sprite.location.x);
 			assert.equal(100, sprite.location.y);
-			
 
 		});
-	
-	
+
 		it('should be size of image', function() {
 
 			//image.width, image.height
-			assert.equal(sprite.size.x,image.width);
-			assert.equal(sprite.size.y,image.height);
-			
-		
+			assert.equal(sprite.size.x, image.width);
+			assert.equal(sprite.size.y, image.height);
 
 		});
-	
+
+	});
+
+	describe('Basic Engine Tests', function() {
+
+		var keyDownCalled = false;
+		var processBeginCalled = 0;
+		var processEndCalled = 0;
+
+		var canvasMock = {
+			getContext : function() {
+				return {
+					clearRect : function (){}
+				};
+			},
+			addEventListener: function ()
+			{
+				
+			},
+			removeEventListener : function ()
+			{
+				
+			}
+		};
+
+		var engine = new CanvasKit.EngineBase(canvasMock);
+		engine.keyHandler = function() {
+			keyDownCalled = true;
+		};
+		engine.processBegin = function() {
+			processBeginCalled += 1;
+		};
+		engine.processEnd = function() {
+			processEndCalled = true;
+			engine.setState(CanvasKit.EngineStates.STOP);
+		};
+
+		it('should be inited as engine', function() {
+
+			assert.equal(engine.state, CanvasKit.EngineStates.STOP);
+
+		});
+
+		it('should run once', function() {
+
+			engine.setState(CanvasKit.EngineStates.IDLE);
+
+			assert.equal(processBeginCalled, 1);
+			assert.equal(processEndCalled, 1);
+
+		});
+
 	});
 
 });

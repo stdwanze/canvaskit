@@ -19,7 +19,8 @@ CanvasKit = window.CanvasKit || {}; ( function(CanvasKit) {"use strict";
 				this.processEnd = function (){};
 				
 				this.shapes = []; //CanvasKit.EngineElement
-
+				this.eventObjects = [];
+				
 				this.osd = new CanvasKit.OSDManager(this.canvas, this.ctxt);
 				this.init();
 			}
@@ -47,6 +48,14 @@ CanvasKit = window.CanvasKit || {}; ( function(CanvasKit) {"use strict";
 				clear : function ()
 				{
 					this.ctxt.clearRect(0, 0, this.canvas.width, this.canvas.height);
+				},
+				setState : function (state)
+				{
+					var currState = this.state; 
+					this.state = state;
+					
+					// start manualy only if last known state was idle (no callback registered)
+					if(currState < CanvasKit.EngineStates.IDLE) this.processFrame(0);
 				},
 				processFrame : function(frame) {
 
