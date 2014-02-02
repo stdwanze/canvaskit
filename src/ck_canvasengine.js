@@ -129,7 +129,7 @@ CanvasKit = window.CanvasKit || {}; ( function(CanvasKit) {"use strict";
 						this.objs.push(osdObj);
 					},
 					getXY : function(event) {
-						return new Kit.Point(event.layerX, event.layerY);
+						return new CanvasKit.Point(event.layerX, event.layerY);
 					},
 					handleClick : function(e) {
 						var hitXY = this.getXY(e);
