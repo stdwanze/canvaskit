@@ -14,9 +14,9 @@ CanvasKit = window.CanvasKit || {}; ( function(CanvasKit) {"use strict";
 				this.state = CanvasKit.EngineStates.STOP;
 
 				// func handler
-				this.keyHandler = function (){};
-				this.processBegin = function (){};
-				this.processEnd = function (){};
+				this.keyHandler = function (event){};
+				this.processBegin = function (state){};
+				this.processEnd = function (state){};
 				
 				this.shapes = []; //CanvasKit.EngineElement
 				this.eventObjects = [];

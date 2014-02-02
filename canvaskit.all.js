@@ -45,9 +45,9 @@ CanvasKit = window.CanvasKit || {}; ( function(CanvasKit) {"use strict";
 				this.state = CanvasKit.EngineStates.STOP;
 
 				// func handler
-				this.keyHandler = function (){};
-				this.processBegin = function (){};
-				this.processEnd = function (){};
+				this.keyHandler = function (event){};
+				this.processBegin = function (state){};
+				this.processEnd = function (state){};
 				
 				this.shapes = []; //CanvasKit.EngineElement
 				this.eventObjects = [];
@@ -199,7 +199,7 @@ CanvasKit = window.CanvasKit || {}; ( function(CanvasKit) {"use strict";
 				};
 				return point;
 			}());
-			
+		
 		CanvasKit.AABB = ( function() {
 
 				function aabb(location, size) {
@@ -236,6 +236,26 @@ CanvasKit = window.CanvasKit || {}; ( function(CanvasKit) {"use strict";
 				};
 				return element;
 			}());
+			CanvasKit.Circle = (function (){
+			
+			function circle (centerPoint, radius)
+			{
+				CanvasKit.EngineElement.call(this,centerPoint,radius);
+			}
+			circle.prototype = new CanvasKit.EngineElement();
+			circle.prototype.constructor = circle;
+			
+			circle.prototype.render = function (canvas, ctxt)
+			{
+				ctxt.beginPath();
+				ctxt.arc(this.location.x, this.location.y, this.size, 0, 2 * Math.PI, false);
+			    ctxt.stroke();
+    			ctxt.closePath();
+			};
+			
+			
+			return circle;
+		}());
 		CanvasKit.OSDElement = ( function() {
 
 				function element(location, size)// CanvasKit.Points
