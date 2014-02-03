@@ -15,6 +15,12 @@ CanvasKit = window.CanvasKit || {};
 				} else {
 					return false;
 				}
+			},
+			collideElements : function(engineelement1, engineelement2)
+			{
+				var aabb1 = enginelement1.getAABB();
+				var aabb2 = enginelement2.getAABB();
+				return collides(aabb1,aabb2);
 			}
 		};
 
@@ -232,7 +238,12 @@ CanvasKit = window.CanvasKit || {}; ( function(CanvasKit) {"use strict";
 					},
 					tick : function() {
 
+					},
+					getAABB : function ()
+					{
+						return new CanvasKit.AABB(this.location, this.size);
 					}
+					
 				};
 				return element;
 			}());
@@ -251,6 +262,13 @@ CanvasKit = window.CanvasKit || {}; ( function(CanvasKit) {"use strict";
 				ctxt.arc(this.location.x, this.location.y, this.size, 0, 2 * Math.PI, false);
 			    ctxt.stroke();
     			ctxt.closePath();
+			};
+			circle.prototype.getAABB = function ()
+			{
+				var topleft = new CanvasKit.Point(this.location.x-this.size.x/2,this.location.y-this.size.y/2 );
+				var bottomright = new CanvasKit.Point(this.location.x+this.size.x/2,this.location.y+this.size.y/2 );
+				
+				return new CanvasKit.AABB(topleft, bottomright);
 			};
 			
 			

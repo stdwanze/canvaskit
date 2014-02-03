@@ -8,6 +8,12 @@ CanvasKit = window.CanvasKit || {};
 				} else {
 					return false;
 				}
+			},
+			collideElements : function(engineelement1, engineelement2)
+			{
+				var aabb1 = enginelement1.getAABB();
+				var aabb2 = enginelement2.getAABB();
+				return collides(aabb1,aabb2);
 			}
 		};
 
