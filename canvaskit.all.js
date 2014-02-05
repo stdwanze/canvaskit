@@ -7,6 +7,23 @@
  */
 CanvasKit = window.CanvasKit || {};
 ( function(CanvasKit) {"use strict";
+		
+		CanvasKit.Matrix = (function ()
+		{
+			function matrix (rows)
+			{
+				this.width = rows.length;
+				this.rows = rows;
+				
+				this.mult = function (vector)
+				{
+					var x = this.rows[0][0]*vector.x + this.rows[0][1]*vector.y;
+					var y = this.rows[1][0]*vector.x + this.rows[1][1]*vector.y;
+					return new CanvasKit.Point(x,y);
+				};
+			}
+			return matrix;	
+		}());
 		CanvasKit.Algorithm = {
 
 			collides : function(AABB1, AABB2) {
@@ -18,12 +35,27 @@ CanvasKit = window.CanvasKit || {};
 			},
 			collideElements : function(engineelement1, engineelement2)
 			{
-				var aabb1 = enginelement1.getAABB();
-				var aabb2 = enginelement2.getAABB();
-				return collides(aabb1,aabb2);
+				var aabb1 = engineelement1.getAABB();
+				var aabb2 = engineelement2.getAABB();
+				return CanvasKit.Algorithm.collides(aabb1,aabb2);
+			},
+			arcToRad : function (arc)
+			{
+				return  arc*Math.PI/180;
+			},
+			getRotationMatrixFor: function (arc)
+			{
+				var cos = Math.cos(CanvasKit.Algorithm.arcToRad(arc));
+				var sin = Math.sin(CanvasKit.Algorithm.arcToRad(arc));
+				
+				return new CanvasKit.Matrix([[cos,-1*sin],[sin,cos]]);
+				
 			}
+			
 		};
 
+		
+		
 		return CanvasKit;
 	}(window.CanvasKit || {}));
 
@@ -202,6 +234,27 @@ CanvasKit = window.CanvasKit || {}; ( function(CanvasKit) {"use strict";
 				function point(x, y) {
 					this.x = x;
 					this.y = y;
+					
+					this.translate = function (offset)
+					{
+						this.x += offset.x;
+						this.y += offset.y;
+						
+						return this;
+					};
+					 
+					this.reverse = function ()
+					{
+						this.x = -1* this.x;
+						this.y = -1* this.y;
+						
+						return this;
+					}; 
+					
+					this.clone = function ()
+					{
+						return new CanvasKit.Point(this.x,this.y);
+					};
 				};
 				return point;
 			}());
@@ -210,7 +263,7 @@ CanvasKit = window.CanvasKit || {}; ( function(CanvasKit) {"use strict";
 
 				function aabb(location, size) {
 					this.x = location.x;
-					this.y = location.x;
+					this.y = location.y;
 					
 					this.width = size.x;
 					this.height = size.y;
@@ -265,10 +318,10 @@ CanvasKit = window.CanvasKit || {}; ( function(CanvasKit) {"use strict";
 			};
 			circle.prototype.getAABB = function ()
 			{
-				var topleft = new CanvasKit.Point(this.location.x-this.size.x/2,this.location.y-this.size.y/2 );
-				var bottomright = new CanvasKit.Point(this.location.x+this.size.x/2,this.location.y+this.size.y/2 );
+				var topleft = new CanvasKit.Point(this.location.x-this.size/2,this.location.y-this.size/2 );
+				var size = new CanvasKit.Point(this.size,this.size);
 				
-				return new CanvasKit.AABB(topleft, bottomright);
+				return new CanvasKit.AABB(topleft, size);
 			};
 			
 			

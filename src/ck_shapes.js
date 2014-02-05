@@ -4,6 +4,27 @@ CanvasKit = window.CanvasKit || {}; ( function(CanvasKit) {"use strict";
 				function point(x, y) {
 					this.x = x;
 					this.y = y;
+					
+					this.translate = function (offset)
+					{
+						this.x += offset.x;
+						this.y += offset.y;
+						
+						return this;
+					};
+					 
+					this.reverse = function ()
+					{
+						this.x = -1* this.x;
+						this.y = -1* this.y;
+						
+						return this;
+					}; 
+					
+					this.clone = function ()
+					{
+						return new CanvasKit.Point(this.x,this.y);
+					};
 				};
 				return point;
 			}());
@@ -12,7 +33,7 @@ CanvasKit = window.CanvasKit || {}; ( function(CanvasKit) {"use strict";
 
 				function aabb(location, size) {
 					this.x = location.x;
-					this.y = location.x;
+					this.y = location.y;
 					
 					this.width = size.x;
 					this.height = size.y;
@@ -67,10 +88,10 @@ CanvasKit = window.CanvasKit || {}; ( function(CanvasKit) {"use strict";
 			};
 			circle.prototype.getAABB = function ()
 			{
-				var topleft = new CanvasKit.Point(this.location.x-this.size.x/2,this.location.y-this.size.y/2 );
-				var bottomright = new CanvasKit.Point(this.location.x+this.size.x/2,this.location.y+this.size.y/2 );
+				var topleft = new CanvasKit.Point(this.location.x-this.size/2,this.location.y-this.size/2 );
+				var size = new CanvasKit.Point(this.size,this.size);
 				
-				return new CanvasKit.AABB(topleft, bottomright);
+				return new CanvasKit.AABB(topleft, size);
 			};
 			
 			
