@@ -43,6 +43,25 @@ CanvasKit = window.CanvasKit || {};
 				
 				return new CanvasKit.Matrix([[cos,-1*sin],[sin,cos]]);
 				
+			},
+			
+			calcCenter: function (topleft,bottomright)
+			{
+				var x = topleft.x  + (bottomright.x	- topleft.x )/2;
+				var y = topleft.y  + (bottomright.y	- topleft.y )/2;
+				return new CanvasKit.Point(x,y);
+			},
+			
+			alignText: function (topleft,bottomright, textwidth,textheight)
+			{
+				var center = CanvasKit.Algorithm.calcCenter(topleft,bottomright);
+				var xspace = center.x - topleft.x;
+				var yspace = center.y - topleft.y;
+				var pivotwidth = textwidth/2;
+				var pivotheight = textheight/2;
+				
+				return new CanvasKit.Point (center.x - pivotwidth, center.y+pivotheight);				
+			
 			}
 			
 		};

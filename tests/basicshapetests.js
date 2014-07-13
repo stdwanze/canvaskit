@@ -8,6 +8,41 @@ describe('BasicShape Tests', function() {
 			assert.equal(10, point.x);
 			assert.equal(100, point.y);
 		});
+		it('should find center ', function() {
+
+			var topleft = new CanvasKit.Point(10, 10);
+			var bottomright = new CanvasKit.Point(20, 20);
+			var center = CanvasKit.Algorithm.calcCenter(topleft,bottomright);
+
+			assert.equal(15, center.x);
+			assert.equal(15, center.y);
+			
+			center = CanvasKit.Algorithm.alignText(topleft,bottomright,8);
+			assert.equal(11, center.x);
+			assert.equal(15, center.y);
+		});
+	});
+	describe('Rectangle Element', function() {
+		it("should create a rectangle",function (){
+			var point = new CanvasKit.Point(10, 100);
+			var size = new CanvasKit.Point(20, 25);
+	
+			var element = new CanvasKit.Rectangle(point, size);
+			assert.equal(false, element.isOut());
+			assert.equal(10, element.location.x);
+			assert.equal(100, element.location.y);
+			assert.equal(20, element.size.x);
+			assert.equal(25, element.size.y);
+			assert.equal(true, element.contentstyle.fill);
+			assert.equal(true, element.contentstyle.border);
+			assert.equal("black", element.contentstyle.fillcolor);
+			assert.equal("black", element.contentstyle.bordercolor);
+			assert.equal("1", element.contentstyle.bordersize);
+			assert.equal("", element.contentstyle.text);
+			assert.equal(30, element.bottomRight().x);
+			assert.equal(125, element.bottomRight().y);
+			assert.equal(0, element.contentstyle.textangle);
+		});
 
 	});
 	describe('EngineElement', function() {
@@ -54,7 +89,7 @@ describe('BasicShape Tests', function() {
 		var element = new CanvasKit.OSDElement(point, size);
 		it('should be hit', function() {
 
-			var click = new CanvasKit.Point(11, 99);
+			var click = new CanvasKit.Point(11, 101);
 			assert.isTrue(element.isHit(click));
 
 		});
@@ -99,16 +134,15 @@ describe('BasicShape Tests', function() {
 		var canvasMock = {
 			getContext : function() {
 				return {
-					clearRect : function (){}
+					clearRect : function() {
+					}
 				};
 			},
-			addEventListener: function ()
-			{
-				
+			addEventListener : function() {
+
 			},
-			removeEventListener : function ()
-			{
-				
+			removeEventListener : function() {
+
 			}
 		};
 
