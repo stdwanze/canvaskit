@@ -1,0 +1,24 @@
+var keyState = {};    
+window.addEventListener('keydown',function(e){
+    keyState[e.keyCode || e.which] = true;
+},true);    
+window.addEventListener('keyup',function(e){
+    keyState[e.keyCode || e.which] = false;
+},true);
+
+x = 100;
+
+function gameLoop() {
+    if (keyState[37] || keyState[65]){
+        x -= 1;
+    }    
+    if (keyState[39] || keyState[68]){
+        x += 1;
+    }
+
+    // redraw/reposition your object here
+    // also redraw/animate any objects not controlled by the user
+
+    setTimeout(gameLoop, 10);
+}    
+gameLoop();
