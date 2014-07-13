@@ -299,6 +299,7 @@ CanvasKit = window.CanvasKit || {}; ( function(CanvasKit) {"use strict";
 					this.textangle = 0;
 					this.bordersize = 1;
 				}
+
 				return style;
 			}());
 		CanvasKit.EngineElement = ( function() {
@@ -308,7 +309,7 @@ CanvasKit = window.CanvasKit || {}; ( function(CanvasKit) {"use strict";
 					this.location = location;
 					this.size = size;
 					this.contentstyle = contentstyle;
-					
+
 				}
 
 
@@ -326,7 +327,7 @@ CanvasKit = window.CanvasKit || {}; ( function(CanvasKit) {"use strict";
 					getAABB : function() {
 						return new CanvasKit.AABB(this.location, this.size);
 					},
-					bottomRight : function () { 
+					bottomRight : function() {
 						return new CanvasKit.Point(this.location.x + this.size.x, this.location.y + this.size.y)
 					}
 				};
@@ -367,13 +368,25 @@ CanvasKit = window.CanvasKit || {}; ( function(CanvasKit) {"use strict";
 
 					}
 
-					CanvasKit.EngineElement.call(this,topleft, size, contentstyle);
+					CanvasKit.EngineElement.call(this, topleft, size, contentstyle);
 				}
 
 
 				rectangle.prototype = new CanvasKit.EngineElement();
 				rectangle.prototype.constructor = rectangle;
 
+				rectangle.prototype.calcFontSize = function(text, ctxt, width) {
+					var pt = 50;
+					ctxt.font = pt + "pt Arial";
+					
+					while (pt > 1 &&  ctxt.measureText(text).width > width) {
+						pt -= 2;
+						ctxt.font = pt + "pt Arial";
+						
+					}
+
+					return pt;
+				};
 				rectangle.prototype.render = function(canvas, ctxt) {
 
 					ctxt.beginPath();
@@ -385,27 +398,37 @@ CanvasKit = window.CanvasKit || {}; ( function(CanvasKit) {"use strict";
 					ctxt.fillStyle = this.contentstyle.fillcolor;
 					if (this.contentstyle.fill)
 						ctxt.fillRect(this.location.x, this.location.y, this.size.x, this.size.y);
-					
-					if( this.contentstyle.text.length > 0){
-						
-						/*	ctxt.save();
-			ctxt.translate( this.location.x,this.location.y);
-			ctxt.rotate( -this.currArcPosInRad);
-			ctxt.fillStyle = this.color;
-			ctxt.fillRect(-this.paddleSize.x/2, -this.paddleSize.y/2, this.paddleSize.x, this.paddleSize.y);
-			ctxt.restore();*/
-						
-						
-						
-						
-						ctxt.font = this.contentstyle.textsize+"pt Arial"; //'italic 40pt Calibri';
-						var textwidth = ctxt.measureText( this.contentstyle.text).width;
-					
-						var textlocation = CanvasKit.Algorithm.alignText(this.location,this.bottomRight(),textwidth, this.contentstyle.textsize);
-	      				ctxt.fillText(this.contentstyle.text, textlocation.x, textlocation.y);
-						
+
+					if (this.contentstyle.text.length > 0) {
+
+						var fontpt = this.contentstyle.textsize < 0 ? this.calcFontSize(this.contentstyle.text, ctxt, this.size.y) : this.contentstyle.textsize;
+
+						ctxt.font = fontpt + "pt Arial";
+						var textwidth = ctxt.measureText(this.contentstyle.text).width;
+
+						//'italic 40pt Calibri';
+
+						if (this.contentstyle.textangle != 0) {
+							var textlocation = CanvasKit.Algorithm.alignText(this.location, this.bottomRight(), textwidth, fontpt);
+							var center = CanvasKit.Algorithm.calcCenter(this.location, this.bottomRight());
+							var normalizedtextlocation = new CanvasKit.Point(textlocation.x - center.x, textlocation.y - center.y);
+
+							ctxt.save();
+							ctxt.translate(center.x, center.y);
+
+							var currArcInRad = this.contentstyle.textangle * Math.PI / 180;
+
+							ctxt.rotate(-currArcInRad);
+							ctxt.fillText(this.contentstyle.text, normalizedtextlocation.x, normalizedtextlocation.y);
+							ctxt.restore();
+						} else {
+
+							var textlocation = CanvasKit.Algorithm.alignText(this.location, this.bottomRight(), textwidth, this.contentstyle.textsize);
+							ctxt.fillText(this.contentstyle.text, textlocation.x, textlocation.y);
+						}
+
 					}
-						
+
 				};
 				rectangle.prototype.getAABB = function() {
 					return new CanvasKit.AABB(this.location, this.size);

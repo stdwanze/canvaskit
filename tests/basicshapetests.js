@@ -42,6 +42,8 @@ describe('BasicShape Tests', function() {
 			assert.equal(30, element.bottomRight().x);
 			assert.equal(125, element.bottomRight().y);
 			assert.equal(0, element.contentstyle.textangle);
+			
+			
 		});
 
 	});
